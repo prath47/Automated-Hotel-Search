@@ -46,3 +46,49 @@ class Booking(webdriver.Chrome):
         time.sleep(2)
         self.find_element(By.XPATH , "//li[@id='autocomplete-result-0']").click()
         time.sleep(2)
+        
+    def select_dates(self , checkin_date=None , checkout_date=None):
+        try:
+            checkin_element = self.find_element(By.CSS_SELECTOR, f"span[data-date='{checkin_date}']")
+            checkin_element.click()
+            
+            checkout_element = self.find_element(By.CSS_SELECTOR, f"span[data-date='{checkout_date}']")
+            checkout_element.click()
+            time.sleep(2)
+        except:
+            pass        
+    
+    def select_adults(self, count=2):
+        dropdown = self.find_element(By.CSS_SELECTOR , "span[data-testid='searchbox-form-button-icon']")
+        dropdown.click()
+        
+        while True:
+            try:
+                decrease_adults = self.find_element(By.XPATH , '/html[1]/body[1]/div[3]/div[2]/div[1]/form[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/button[1]')
+                decrease_adults.click()
+                valueElement = self.find_element(By.CSS_SELECTOR , 'body > div:nth-child(6) > div:nth-child(2) > div:nth-child(1) > form:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2)')
+                val = valueElement.get_attribute('innerHTML')
+                if(val == '1'):
+                    break
+            except: 
+                pass
+        while True:
+            valueElement = self.find_element(By.CSS_SELECTOR , 'body > div:nth-child(6) > div:nth-child(2) > div:nth-child(1) > form:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2)')
+            val = valueElement.get_attribute('innerHTML')
+            if(val == count):
+                break
+            increase_adults = self.find_element(By.CSS_SELECTOR , 'body > div:nth-child(6) > div:nth-child(2) > div:nth-child(1) > form:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > button:nth-child(3)')
+            increase_adults.click()
+        time.sleep(2)
+        
+    def click_search(self):
+        search_button = self.find_element(By.CSS_SELECTOR  , "button[type='submit']")
+        search_button.click()
+        time.sleep(5)
+        try:
+            wait = WebDriverWait(self, 5)
+            element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "button[aria-label='Dismiss sign-in info.']")))
+            element.click()
+        except:
+            pass
+        
