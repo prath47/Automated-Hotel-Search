@@ -10,7 +10,7 @@ with Booking() as bot:
         # bot.select_adults(count='5')
         bot.click_search()
         # bot.apply_star_rating(star=4)
-        # bot.sort_lowest_to_highest()
+        bot.sort_lowest_to_highest()
         # bot.refresh()
         bot.report_results()
         

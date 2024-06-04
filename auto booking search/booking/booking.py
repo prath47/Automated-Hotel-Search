@@ -111,7 +111,7 @@ class Booking(webdriver.Chrome):
         button = self.find_element(By.CSS_SELECTOR , 'button[data-testid="sorters-dropdown-trigger"]')
         button.click()
         self.find_element(By.XPATH , "//button[@data-id='class_asc']").click()
-        time.sleep(2)
+        time.sleep(3)
     
     def report_results(self):
         values = []
@@ -125,8 +125,8 @@ class Booking(webdriver.Chrome):
             field_names=["Hotel Name" , "Hotel Price" , "Hotle Score"]
         ) 
         for i in range(len(hotel_title_object)):
-            hotel_title = hotel_title_object[i].get_attribute('innerHTML') 
-            hotel_price = hotel_price_object[i].get_attribute('innerHTML')
+            hotel_title = hotel_title_object[i].get_attribute('innerText') 
+            hotel_price = hotel_price_object[i].get_attribute('innerText')
             hotel_score_object = self.find_elements(By.XPATH, f"(//div[@class='a3b8729ab1 d86cee9b25'])[{i+1}]")
             hotel_score = (hotel_score_object[0].get_attribute('innerText')[:3])
             temp = ([hotel_title , 
