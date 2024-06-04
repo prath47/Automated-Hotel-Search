@@ -7,12 +7,14 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import booking.constants as const
+from booking.show_report import BookingReport
+from prettytable import PrettyTable
 
 class Booking(webdriver.Chrome):
     def __init__(self, teardown=False):
         self.teardown = teardown
         super(Booking, self).__init__(service=ChromeService(ChromeDriverManager().install()))
-        self.implicitly_wait(10)
+        self.implicitly_wait(2)
         self.maximize_window()
     
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -45,7 +47,6 @@ class Booking(webdriver.Chrome):
         input_box.send_keys(place)
         time.sleep(2)
         self.find_element(By.XPATH , "//li[@id='autocomplete-result-0']").click()
-        time.sleep(2)
         
     def select_dates(self , checkin_date=None , checkout_date=None):
         try:
@@ -102,7 +103,7 @@ class Booking(webdriver.Chrome):
         try:
             star_element = self.find_element(By.CSS_SELECTOR , f'div[data-filters-item="class:class={star}"]')            
             star_element.click()
-            time.sleep(6)
+            time.sleep(2)
         except:
             print("no hotels found for this star rating")
     
@@ -110,4 +111,28 @@ class Booking(webdriver.Chrome):
         button = self.find_element(By.CSS_SELECTOR , 'button[data-testid="sorters-dropdown-trigger"]')
         button.click()
         self.find_element(By.XPATH , "//button[@data-id='class_asc']").click()
-        time.sleep(5)
+        time.sleep(2)
+    
+    def report_results(self):
+        values = []
+        hotel_title_object = self.find_elements(By.CSS_SELECTOR, 'div[data-testid="title"]')
+        hotel_price_object = self.find_elements(By.CSS_SELECTOR, 'span[data-testid="price-and-discounted-price"]')
+        # print(len(hotel_price))
+        
+        # for i in range(10):
+        # print(hotel_score);
+        table = PrettyTable(
+            field_names=["Hotel Name" , "Hotel Price" , "Hotle Score"]
+        ) 
+        for i in range(len(hotel_title_object)):
+            hotel_title = hotel_title_object[i].get_attribute('innerHTML') 
+            hotel_price = hotel_price_object[i].get_attribute('innerHTML')
+            hotel_score_object = self.find_elements(By.XPATH, f"(//div[@class='a3b8729ab1 d86cee9b25'])[{i+1}]")
+            hotel_score = (hotel_score_object[0].get_attribute('innerText')[:3])
+            temp = ([hotel_title , 
+                           hotel_price , 
+                           hotel_score])
+            table.add_row(temp)
+        print(table)
+        
+        
