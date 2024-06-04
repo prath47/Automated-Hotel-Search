@@ -84,11 +84,30 @@ class Booking(webdriver.Chrome):
     def click_search(self):
         search_button = self.find_element(By.CSS_SELECTOR  , "button[type='submit']")
         search_button.click()
-        time.sleep(5)
+        time.sleep(1)
         try:
             wait = WebDriverWait(self, 5)
             element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "button[aria-label='Dismiss sign-in info.']")))
             element.click()
         except:
             pass
-        
+    
+    def apply_star_rating(self , star=0):
+        try:
+            wait = WebDriverWait(self, 5)
+            element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "button[aria-label='Dismiss sign-in info.']")))
+            element.click()
+        except:
+            pass
+        try:
+            star_element = self.find_element(By.CSS_SELECTOR , f'div[data-filters-item="class:class={star}"]')            
+            star_element.click()
+            time.sleep(6)
+        except:
+            print("no hotels found for this star rating")
+    
+    def sort_lowest_to_highest(self):
+        button = self.find_element(By.CSS_SELECTOR , 'button[data-testid="sorters-dropdown-trigger"]')
+        button.click()
+        self.find_element(By.XPATH , "//button[@data-id='class_asc']").click()
+        time.sleep(5)
