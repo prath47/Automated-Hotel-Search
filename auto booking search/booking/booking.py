@@ -42,7 +42,7 @@ class Booking(webdriver.Chrome):
             pass
 
     def select_place_to_go(self , place=None):
-        input_box = self.find_element(By.XPATH , "//input[@id=':re:']")
+        input_box = self.find_element(By.XPATH , "(//input[@id=':r7:'])[1]")
         input_box.send_keys(place)
         time.sleep(2)
         self.find_element(By.XPATH , "//li[@id='autocomplete-result-0']").click()
@@ -56,7 +56,7 @@ class Booking(webdriver.Chrome):
             checkout_element.click()
             time.sleep(2)
         except:
-            pass        
+            pass            
     
     def select_adults(self, count=2):
         dropdown = self.find_element(By.CSS_SELECTOR , "span[data-testid='searchbox-form-button-icon']")
@@ -109,8 +109,7 @@ class Booking(webdriver.Chrome):
     def sort_lowest_to_highest(self):
         button = self.find_element(By.CSS_SELECTOR , 'button[data-testid="sorters-dropdown-trigger"]')
         button.click()
-        self.find_element(By.XPATH , "//button[@data-id='class_asc']").click()
-        time.sleep(3)
+        self.find_element(By.CSS_SELECTOR , 'button[data-id="class_asc"]').click()
     
     def report_results(self):
         values = []
@@ -126,7 +125,9 @@ class Booking(webdriver.Chrome):
         for i in range(len(hotel_title_object)):
             hotel_title = hotel_title_object[i].get_attribute('innerText') 
             hotel_price = hotel_price_object[i].get_attribute('innerText')
-            hotel_score_object = self.find_elements(By.XPATH, f"(//div[@class='a3b8729ab1 d86cee9b25'])[{i+1}]")
+            
+            hotel_score_object = self.find_elements(By.XPATH, f"(//div[@class='f13857cc8c e008572b71'])[{i+1}]")
+            # print(hotel_score_object)
             hotel_score = (hotel_score_object[0].get_attribute('innerText')[:3])
             temp = ([hotel_title , 
                            hotel_price , 
