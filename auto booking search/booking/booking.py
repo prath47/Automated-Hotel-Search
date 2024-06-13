@@ -7,7 +7,6 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import booking.constants as const
-from booking.show_report import BookingReport
 from prettytable import PrettyTable
 
 class Booking(webdriver.Chrome):
